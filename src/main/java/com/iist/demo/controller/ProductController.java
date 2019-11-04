@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.iist.demo.model.Product;
 
 @RestController
-@RequestMapping(value="${request.mapping}")
+@RequestMapping(value="${request.mapping}" + "/products")
 public class ProductController {
 
-	@GetMapping(value = "/products/{productId}")
+	@GetMapping(value = "/{productId}")
 	public ResponseEntity<Product> get(@PathVariable String productId){
 		
 		Product p = new Product();
