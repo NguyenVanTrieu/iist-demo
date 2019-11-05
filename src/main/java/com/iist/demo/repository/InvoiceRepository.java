@@ -10,25 +10,33 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.iist.demo.model.Invoice;
+import com.iist.demo.model.view.InvoiceView;
 
 public class InvoiceRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
+	@Autowired
+	private InvoiceDetailRepository detailRepository;
+	
 	private static final String SQL_QUERY_CREATE = "INSERT INTO tbl_invoices (id, amount, status, reg_user, reg_dttm)"
 			+ " VALUES(:id, :amount, :status, :regUser, :regDttm)";
 	
-	public int create(Invoice invoice) {
-		return jdbcTemplate.update(SQL_QUERY_CREATE, new BeanPropertySqlParameterSource(invoice));
+	@Transactional
+	public int create(InvoiceView invoice) {
+		
+		detailRepository.createList(invoice.getInvoiceDetails());
+		jdbcTemplate.update(SQL_QUERY_CREATE, new BeanPropertySqlParameterSource(invoice));
+		return 1;
 	}
 	
-	public List<Invoice> gets(int pageSize,
-			int pageNumber, Date fromDate, Date toDate) {
-		String sql = "SELECT * FROM tbl_invoices"
-				+ " WHERE 1";
+	public List<Invoice> gets(int pageSize, int pageNumber, Date fromDate, Date toDate) {
+		
+		String sql = "SELECT * FROM tbl_invoices WHERE 1";
 
 		Map<String, Object> argMap = new HashMap<String, Object>();
 		
@@ -50,8 +58,8 @@ public class InvoiceRepository {
 	}
 	
 	public Integer count(Date fromDate, Date toDate) {
-		String sql = "SELECT count(id) FROM tbl_invoices"
-				+ " WHERE 1";
+		
+		String sql = "SELECT count(id) FROM tbl_invoices WHERE 1";
 
 		Map<String, Object> argMap = new HashMap<String, Object>();
 		
@@ -68,7 +76,7 @@ public class InvoiceRepository {
 		return this.jdbcTemplate.queryForObject(sql, argMap, new BeanPropertyRowMapper<Integer>(Integer.class));
 	}
 	
-	public Invoice get(String id) {
+	public InvoiceView get(String id) {
 		
 		String sql = "SELECT * FROM tbl_invoices WHERE id=:id";
 		
@@ -76,7 +84,7 @@ public class InvoiceRepository {
 		paramMap.put("id", id);
 		
 		try {
-			return this.jdbcTemplate.queryForObject(sql, paramMap, new BeanPropertyRowMapper<Invoice>(Invoice.class));
+			return this.jdbcTemplate.queryForObject(sql, paramMap, new BeanPropertyRowMapper<InvoiceView>(InvoiceView.class));
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
