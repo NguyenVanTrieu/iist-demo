@@ -43,5 +43,4 @@ public class InvoiceDetailRepository {
 		return this.jdbcTemplate.query(sql, argMap, new BeanPropertyRowMapper<InvoiceDetail>(InvoiceDetail.class));
 	}
 
-
 }
