@@ -37,7 +37,7 @@ public class ProductRepository {
 	
 	public Integer count(String search, int pageSize,
 			int pageNumber) {
-		String sql = "SELECT count(id) FROM tbl_products WHERE 1";
+		String sql = "SELECT count(id) FROM tbl_products WHERE 1=1";
 
 		Map<String, Object> argMap = new HashMap<String, Object>();
 		if (!StringUtils.isEmpty(search)) {
@@ -45,7 +45,8 @@ public class ProductRepository {
 			argMap.put("search", search + "%");
 		}
 		
-		return this.jdbcTemplate.queryForObject(sql, argMap, new BeanPropertyRowMapper<Integer>(Integer.class));
+		return this.jdbcTemplate.queryForObject(sql, argMap, Integer.class);
+		
 	}
 	
 }

@@ -10,11 +10,13 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.iist.demo.model.Invoice;
 import com.iist.demo.model.view.InvoiceView;
 
+@Repository
 public class InvoiceRepository {
 
 	@Autowired
@@ -73,7 +75,8 @@ public class InvoiceRepository {
 			argMap.put("toDate", toDate);
 		}
 		
-		return this.jdbcTemplate.queryForObject(sql, argMap, new BeanPropertyRowMapper<Integer>(Integer.class));
+		return this.jdbcTemplate.queryForObject(sql, argMap, Integer.class);
+		
 	}
 	
 	public InvoiceView get(String id) {
@@ -83,11 +86,7 @@ public class InvoiceRepository {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("id", id);
 		
-		try {
-			return this.jdbcTemplate.queryForObject(sql, paramMap, new BeanPropertyRowMapper<InvoiceView>(InvoiceView.class));
-		} catch (EmptyResultDataAccessException e) {
-			return null;
-		}
+		return this.jdbcTemplate.queryForObject(sql, paramMap, new BeanPropertyRowMapper<InvoiceView>(InvoiceView.class));
 	}
 
 }
