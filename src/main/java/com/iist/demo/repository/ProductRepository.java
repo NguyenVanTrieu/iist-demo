@@ -1,6 +1,5 @@
 package com.iist.demo.repository;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,16 +18,14 @@ public class ProductRepository {
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
-	public List<Product> gets(String search, int pageSize,
-			int pageNumber, Date fromDate, Date toDate) {
-		String sql = "SELECT * FROM tbl_products"
-				+ " WHERE 1";
+	public List<Product> gets(String search, int pageSize, int pageNumber) {
+		String sql = "SELECT * FROM tbl_products WHERE 1";
 
 		Map<String, Object> argMap = new HashMap<String, Object>();
 		
 		if (!StringUtils.isEmpty(search)) {
 			sql += " AND product_name like :search";
-			argMap.put("search",  "%" + search);
+			argMap.put("search", search + "%");
 		}
 		
 		sql += " ORDER BY product_name" ;
@@ -38,20 +35,14 @@ public class ProductRepository {
 		return this.jdbcTemplate.query(sql, argMap, new BeanPropertyRowMapper<Product>(Product.class));
 	}
 	
-	public Integer count(Date fromDate, Date toDate) {
-		String sql = "SELECT count(id) FROM tbl_invoices"
-				+ " WHERE 1";
+	public Integer count(String search, int pageSize,
+			int pageNumber) {
+		String sql = "SELECT count(id) FROM tbl_products WHERE 1";
 
 		Map<String, Object> argMap = new HashMap<String, Object>();
-		
-		if (fromDate != null) {
-			sql += " AND reg_dttm >= :fromDate ";
-			argMap.put("fromDate", fromDate);
-		}
-		
-		if (toDate != null) {
-			sql += " AND reg_dttm <= :toDate ";
-			argMap.put("toDate", toDate);
+		if (!StringUtils.isEmpty(search)) {
+			sql += " AND product_name like :search";
+			argMap.put("search", search + "%");
 		}
 		
 		return this.jdbcTemplate.queryForObject(sql, argMap, new BeanPropertyRowMapper<Integer>(Integer.class));

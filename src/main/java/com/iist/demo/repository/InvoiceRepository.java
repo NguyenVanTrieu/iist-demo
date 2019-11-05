@@ -67,6 +67,7 @@ public class InvoiceRepository {
 		
 		return this.jdbcTemplate.queryForObject(sql, argMap, new BeanPropertyRowMapper<Integer>(Integer.class));
 	}
+	
 	public Invoice get(String id) {
 		
 		String sql = "SELECT * FROM tbl_invoices WHERE id=:id";
