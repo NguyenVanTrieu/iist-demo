@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class Product {
 
 	private String id;
+	private String productName;
 	private BigDecimal price;
 	private String regUser;
 	private String regDttm;
@@ -39,6 +40,14 @@ public class Product {
 
 	public void setRegDttm(String regDttm) {
 		this.regDttm = regDttm;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
 }
