@@ -20,7 +20,7 @@ public class InvoiceDetailRepository {
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
 	private final String SQL_QUERY_CREATE = "INSERT INTO tbl_invoice_details (id, invoice_id, product_id, product_name, quantity, price, status, reg_user, reg_dttm)"
-			+ " VALUES(:id, :invoiceId, :productId, :productName, :status, :regUser, :regDttm)";
+			+ " VALUES(:id, :invoiceId, :productId, :productName, :quantity, :price, :status, :regUser, :regDttm)";
 	
 	public int createList(List<InvoiceDetail> invoiceDetails) {
 		

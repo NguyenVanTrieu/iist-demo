@@ -14,7 +14,7 @@ import com.iist.demo.repository.InvoiceDetailRepository;
 import com.iist.demo.repository.InvoiceRepository;
 
 @Service
-public class InvoiceService {
+public class InvoiceService extends BaseService{
 
 	@Autowired
 	private InvoiceRepository invoiceRepository;
@@ -33,6 +33,8 @@ public class InvoiceService {
 	}
 	
 	public Integer create(InvoiceView invoice) {
+		invoice.setRegUser(getCurrentUser());
+		invoice.setRegDttm(new Date());
 		invoiceRepository.create(invoice);
 		return 1;
 	}

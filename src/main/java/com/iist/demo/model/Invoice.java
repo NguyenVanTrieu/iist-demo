@@ -1,6 +1,7 @@
 package com.iist.demo.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Invoice {
 
@@ -8,7 +9,7 @@ public class Invoice {
 	private BigDecimal amount;
 	private String status;
 	private String regUser;
-	private String regDttm;
+	private Date regDttm;
 	
 	public String getId() {
 		return id;
@@ -34,10 +35,10 @@ public class Invoice {
 	public void setRegUser(String regUser) {
 		this.regUser = regUser;
 	}
-	public String getRegDttm() {
+	public Date getRegDttm() {
 		return regDttm;
 	}
-	public void setRegDttm(String regDttm) {
+	public void setRegDttm(Date regDttm) {
 		this.regDttm = regDttm;
 	}
 	
